@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   thread_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: karocha- <karocha-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/03 15:10:15 by thopgood          #+#    #+#             */
-/*   Updated: 2024/09/05 15:10:33 by thopgood         ###   ########.fr       */
+/*   Created: 2025/01/18 15:26:37 by karocha-          #+#    #+#             */
+/*   Updated: 2025/08/03 18:08:58 by karocha-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
 
 int	threads_join(t_data *data)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thopgood <thopgood@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: karocha- <karocha-@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/28 18:14:03 by thopgood          #+#    #+#             */
-/*   Updated: 2024/09/05 14:12:29 by thopgood         ###   ########.fr       */
+/*   Created: 2025/01/18 15:26:37 by karocha-          #+#    #+#             */
+/*   Updated: 2025/08/03 18:08:40 by karocha-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
