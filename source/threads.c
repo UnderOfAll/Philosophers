@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karocha- <karocha-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: karocha- <karocha-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:26:37 by karocha-          #+#    #+#             */
-/*   Updated: 2025/08/03 18:09:02 by karocha-         ###   ########.fr       */
+/*   Updated: 2025/08/10 11:20:57 by karocha-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,46 +15,46 @@
 int	eat(t_philo *philo)
 {
 	if (philo->id % 2 == 1)
-		pthread_mutex_lock(&(philo->data->forks_lock[philo->left_fork]));
+		pthread_mutex_lock(&(philo->table->forks_lock[philo->left_fork]));
 	else
-		pthread_mutex_lock(&(philo->data->forks_lock[philo->right_fork]));
+		pthread_mutex_lock(&(philo->table->forks_lock[philo->right_fork]));
 	print_status(philo, "has taken a fork", 0);
-	if (philo->data->num_of_philos == 1)
+	if (philo->table->num_of_philos == 1)
 		return (pthread_mutex_unlock(
-				&(philo->data->forks_lock[philo->left_fork])), 1);
+				&(philo->table->forks_lock[philo->left_fork])), 1);
 	if (philo->id % 2 == 1)
-		pthread_mutex_lock(&(philo->data->forks_lock[philo->right_fork]));
+		pthread_mutex_lock(&(philo->table->forks_lock[philo->right_fork]));
 	else
-		pthread_mutex_lock(&(philo->data->forks_lock[philo->left_fork]));
+		pthread_mutex_lock(&(philo->table->forks_lock[philo->left_fork]));
 	print_status(philo, "has taken a fork", 0);
-	pthread_mutex_lock(&philo->data->last_meal_lock);
-	philo->time_of_last_meal = timestamp(philo->data);
-	pthread_mutex_unlock(&philo->data->last_meal_lock);
+	pthread_mutex_lock(&philo->table->last_meal_lock);
+	philo->time_of_last_meal = timestamp(philo->table);
+	pthread_mutex_unlock(&philo->table->last_meal_lock);
 	print_status(philo, "is eating", 0);
-	ft_usleep(philo->data->time_to_eat);
+	ft_usleep(philo->table->time_to_eat);
 	meals_eaten_util(philo);
-	pthread_mutex_unlock(&(philo->data->forks_lock[philo->right_fork]));
-	pthread_mutex_unlock(&(philo->data->forks_lock[philo->left_fork]));
+	pthread_mutex_unlock(&(philo->table->forks_lock[philo->right_fork]));
+	pthread_mutex_unlock(&(philo->table->forks_lock[philo->left_fork]));
 	print_status(philo, "is sleeping", 0);
-	ft_usleep(philo->data->time_to_sleep);
+	ft_usleep(philo->table->time_to_sleep);
 	print_status(philo, "is thinking", 0);
 	return (0);
 }
 
 void	*monitor(void *arg)
 {
-	t_data	*data;
+	t_table	*table;
 
-	data = (t_data *)arg;
+	table = (t_table *)arg;
 	while (1)
 	{
-		if (is_dead(data))
+		if (is_dead(table))
 			return (NULL);
-		if (data->meals_required_flag && meals_check(data))
+		if (table->meals_required_flag && meals_check(table))
 		{
-			pthread_mutex_lock(&data->write_lock);
-			data->finished = 1;
-			return (pthread_mutex_unlock(&data->write_lock), NULL);
+			pthread_mutex_lock(&table->write_lock);
+			table->finished = 1;
+			return (pthread_mutex_unlock(&table->write_lock), NULL);
 		}
 		usleep(100);
 	}
@@ -67,38 +67,38 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
-		ft_usleep(philo->data->time_to_eat);
+		ft_usleep(philo->table->time_to_eat);
 	while (1)
 	{
 		if (eat(philo))
 		{
-			pthread_mutex_lock(&philo->data->write_lock);
-			philo->data->finished = 1;
-			return (pthread_mutex_unlock(&philo->data->write_lock), NULL);
+			pthread_mutex_lock(&philo->table->write_lock);
+			philo->table->finished = 1;
+			return (pthread_mutex_unlock(&philo->table->write_lock), NULL);
 		}
-		pthread_mutex_lock(&philo->data->write_lock);
-		if (philo->data->finished == 1)
-			return (pthread_mutex_unlock(&philo->data->write_lock), NULL);
-		pthread_mutex_unlock(&philo->data->write_lock);
-		if (philo->data->num_of_philos % 2 == 1)
-			ft_usleep((philo->data->time_to_eat * 2)
-				- (philo->data->time_to_sleep));
+		pthread_mutex_lock(&philo->table->write_lock);
+		if (philo->table->finished == 1)
+			return (pthread_mutex_unlock(&philo->table->write_lock), NULL);
+		pthread_mutex_unlock(&philo->table->write_lock);
+		if (philo->table->num_of_philos % 2 == 1)
+			ft_usleep((philo->table->time_to_eat * 2)
+				- (philo->table->time_to_sleep));
 	}
 	return (NULL);
 }
 
-void	run_philos(t_data *data)
+void	run_philos(t_table *table)
 {
 	int	i;
 
-	pthread_create(&data->monitor, NULL, monitor, (void *)data);
+	pthread_create(&table->monitor, NULL, monitor, (void *)table);
 	i = -1;
-	while (++i < data->num_of_philos)
+	while (++i < table->num_of_philos)
 	{
-		pthread_mutex_lock(&data->last_meal_lock);
-		data->philos[i].time_of_last_meal = timestamp(data);
-		pthread_create(&data->philos[i].thread, NULL, routine,
-			(void *)&data->philos[i]);
-		pthread_mutex_unlock(&data->last_meal_lock);
+		pthread_mutex_lock(&table->last_meal_lock);
+		table->philos[i].time_of_last_meal = timestamp(table);
+		pthread_create(&table->philos[i].thread, NULL, routine,
+			(void *)&table->philos[i]);
+		pthread_mutex_unlock(&table->last_meal_lock);
 	}
 }

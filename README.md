@@ -14,7 +14,7 @@ Five philosophers sit at a table. Each thinks, and eventually tries to eat. To e
 ## 🔧 Features
 
 - Creation of multiple threads (one per philosopher)
-- Data protection using mutexes (forks)
+- table protection using mutexes (forks)
 - Waiting logic and timing checks to avoid starvation
 - Logging with timestamps and philosopher IDs
 - Death detection and clean simulation termination

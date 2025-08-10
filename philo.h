@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karocha- <karocha-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: karocha- <karocha-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:26:37 by karocha-          #+#    #+#             */
-/*   Updated: 2025/08/03 18:09:14 by karocha-         ###   ########.fr       */
+/*   Updated: 2025/08/10 11:20:57 by karocha-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ typedef struct s_philo
 	int				left_fork;
 	int				right_fork;
 	size_t			time_of_last_meal;
-	struct s_data	*data;
+	struct s_table	*table;
 }				t_philo;
 
-typedef struct s_data
+typedef struct s_table
 {
 	int				num_of_philos;
 	size_t			time_to_die;
@@ -53,28 +53,28 @@ typedef struct s_data
 	pthread_mutex_t	eaten_enough_lock;
 	t_philo			philos[MAX_PHILOSOPHERS];
 	int				finished;
-}				t_data;
+}				t_table;
 
 // parse_args.c
-int			parse_args(int ac, char **av, t_data *data);
+int			parse_args(int ac, char **av, t_table *table);
 
 //utils.c
 size_t		get_current_time(void);
 int			ft_usleep(size_t milliseconds);
-size_t		timestamp(t_data *data);
+size_t		timestamp(t_table *table);
 int			print_status(t_philo *philo, char *str, int force_print);
 
 //init.c
-int			init_data(int ac, char **av, t_data *data);
+int			init_table(int ac, char **av, t_table *table);
 
 //threads.c
-void		run_philos(t_data *data);
+void		run_philos(t_table *table);
 
 //thread_utils.c
-int			threads_join(t_data *data);
-int			meals_check(t_data *data);
-int			is_dead(t_data *data);
-void		destroy_locks(t_data *data);
+int			threads_join(t_table *table);
+int			meals_check(t_table *table);
+int			is_dead(t_table *table);
+void		destroy_locks(t_table *table);
 void		meals_eaten_util(t_philo *philo);
 
 #endif

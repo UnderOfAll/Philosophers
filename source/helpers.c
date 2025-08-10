@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karocha- <karocha-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: karocha- <karocha-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:26:37 by karocha-          #+#    #+#             */
-/*   Updated: 2025/08/03 18:08:40 by karocha-         ###   ########.fr       */
+/*   Updated: 2025/08/10 11:20:57 by karocha-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 int	print_status(t_philo *philo, char *str, int force_print)
 {
-	if (pthread_mutex_lock(&(philo->data->write_lock)))
+	if (pthread_mutex_lock(&(philo->table->write_lock)))
 		return (1);
-	if (!philo->data->finished || force_print)
-		printf("%zu\t%d %s\n", timestamp(philo->data), philo->id, str);
-	if (pthread_mutex_unlock(&(philo->data->write_lock)))
+	if (!philo->table->finished || force_print)
+		printf("%zu\t%d %s\n", timestamp(philo->table), philo->id, str);
+	if (pthread_mutex_unlock(&(philo->table->write_lock)))
 		return (1);
 	return (0);
 }
 
-size_t	timestamp(t_data *data)
+size_t	timestamp(t_table *table)
 {
-	return (get_current_time() - data->start_time);
+	return (get_current_time() - table->start_time);
 }
 
 size_t	get_current_time(void)

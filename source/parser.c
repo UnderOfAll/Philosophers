@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: karocha- <karocha-@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: karocha- <karocha-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:26:37 by karocha-          #+#    #+#             */
-/*   Updated: 2025/08/03 18:08:55 by karocha-         ###   ########.fr       */
+/*   Updated: 2025/08/10 11:20:57 by karocha-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,28 +50,28 @@ static size_t	ft_atoi_ph(const char *nptr, int *error)
 	return (output);
 }
 
-int	parse_args(int ac, char **av, t_data *data)
+int	parse_args(int ac, char **av, t_table *table)
 {
 	int	error;
 
 	if (ac < 5 || 6 < ac)
 		return (write(2, "Invalid number of args\n", 23), 1);
-	data->num_of_philos = ft_atoi_ph(av[1], &error);
-	if (error || data->num_of_philos < 1 || data->num_of_philos > 200)
+	table->num_of_philos = ft_atoi_ph(av[1], &error);
+	if (error || table->num_of_philos < 1 || table->num_of_philos > 200)
 		return (write(2, "Invalid number_of_philosophers\n", 31), 2);
-	data->time_to_die = ft_atoi_ph(av[2], &error);
-	if (error || data->time_to_die < 60)
+	table->time_to_die = ft_atoi_ph(av[2], &error);
+	if (error || table->time_to_die < 60)
 		return (write(2, "Invalid time_to_die\n", 20), 3);
-	data->time_to_eat = ft_atoi_ph(av[3], &error);
-	if (error || data->time_to_eat < 60)
+	table->time_to_eat = ft_atoi_ph(av[3], &error);
+	if (error || table->time_to_eat < 60)
 		return (write(2, "Invalid time_to_eat\n", 20), 4);
-	data->time_to_sleep = ft_atoi_ph(av[4], &error);
-	if (error || data->time_to_sleep < 60)
+	table->time_to_sleep = ft_atoi_ph(av[4], &error);
+	if (error || table->time_to_sleep < 60)
 		return (write(2, "Invalid time_to_sleep\n", 22), 5);
 	if (ac == 6)
 	{
-		data->meals_required_flag = 1;
-		data->num_required_meals = ft_atoi_ph(av[5], &error);
+		table->meals_required_flag = 1;
+		table->num_required_meals = ft_atoi_ph(av[5], &error);
 		if (error || !is_int(ft_atoi_ph(av[5], &error)))
 			return (write(2, "Invalid times philosophers must eat\n", 36), 6);
 	}
