@@ -6,7 +6,7 @@
 /*   By: karocha- <karocha-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:26:37 by karocha-          #+#    #+#             */
-/*   Updated: 2025/08/10 11:20:57 by karocha-         ###   ########.fr       */
+/*   Updated: 2025/08/10 15:02:46 by karocha-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	parse_args(int ac, char **av, t_table *table)
 {
 	int	error;
 
-	if (ac < 5 || 6 < ac)
+	if (ac < 5 || ac > 6)
 		return (write(2, "Invalid number of args\n", 23), 1);
 	table->num_of_philos = ft_atoi_ph(av[1], &error);
 	if (error || table->num_of_philos < 1 || table->num_of_philos > 200)

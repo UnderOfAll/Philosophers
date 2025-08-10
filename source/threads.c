@@ -6,11 +6,23 @@
 /*   By: karocha- <karocha-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 15:26:37 by karocha-          #+#    #+#             */
-/*   Updated: 2025/08/10 11:20:57 by karocha-         ###   ########.fr       */
+/*   Updated: 2025/08/10 16:20:35 by karocha-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
+
+static int	has_eaten_check(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->table->eaten_enough_lock);
+	if (philo->has_eaten_enough)
+	{
+		pthread_mutex_unlock(&philo->table->eaten_enough_lock);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->table->eaten_enough_lock);
+	return (0);
+}
 
 int	eat(t_philo *philo)
 {
@@ -70,6 +82,8 @@ void	*routine(void *arg)
 		ft_usleep(philo->table->time_to_eat);
 	while (1)
 	{
+		if (has_eaten_check(philo))
+			return (NULL);
 		if (eat(philo))
 		{
 			pthread_mutex_lock(&philo->table->write_lock);
